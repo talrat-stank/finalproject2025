@@ -10,6 +10,8 @@ The use case is to have a simple drum machine wherever you go.
 
 ### System Requirements
 
+Everything must be able to run simultaneously and without affecting or altering each other.
+
 ### Constraints and Limitations
 
-The time it might take to finish every layer should be considered.
+The time it might take to finish every layer should be considered. Ensuring everything is properly connected and using effects seperately.
