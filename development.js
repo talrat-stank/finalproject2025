@@ -29,20 +29,6 @@ const bpm2ms = function () {
   return 60000 / bpm;
 };
 
-// const updateTransport = function () {
-//   // saying if you /16, what is the remainder, creates 16th note
-//   sixteenth = (counter % 16) + 1;
-//   beat = Math.floor((counter % 16) / 4) + 1;
-//   bar = Math.floor(counter / 16) + 1;
-
-//   barDisp.innerText = bar.toString();
-//   beatDisp.innerText = beat.toString();
-//   sixteenthDisp.innerText = sixteenth.toString();
-//   countDisp.innerText = counter.toString();
-
-//   counter++;
-// };
-
 let buttons = document.querySelectorAll("button");
 let onOff = buttons[0];
 let audioOn = false;
@@ -64,21 +50,21 @@ const loadAndDecode = async function (event) {
 
 //-----------------------------------------second channel=====================================//
 // load and decode audio
-// const loadAndDecodeTwo = async function (event) {
-//   let fileTwo = event.target.files[0];
-//   let arraybufTwo = await fileTwo.arrayBufferTwo();
-//   audiobufferTwo = await ctx.decodeAudioData(arraybufTwo);
-//   console.log(audiobufferTwo);
-// };
+const loadAndDecodeTwo = async function (event) {
+  let fileTwo = event.target.files[0];
+  let arraybufTwo = await fileTwo.arrayBufferTwo();
+  audiobufferTwo = await ctx.decodeAudioData(arraybufTwo);
+  console.log(audiobufferTwo);
+};
 
 // //-----------------------------------------third channel=====================================//
 // // load and decode audio
-// const loadAndDecodeThree = async function (event) {
-//   let fileThree = event.target.files[0];
-//   let arraybufThree = await fileThree.arrayBufferThree();
-//   audiobufferThree = await ctx.decodeAudioData(arraybufThree);
-//   console.log(audiobufferThree);
-// };
+const loadAndDecodeThree = async function (event) {
+  let fileThree = event.target.files[0];
+  let arraybufThree = await fileThree.arrayBufferThree();
+  audiobufferThree = await ctx.decodeAudioData(arraybufThree);
+  console.log(audiobufferThree);
+};
 
 //-----------------------------------------PLAY, REVERSE, & STOP BUTTONS----------------------------//
 // play back audio
@@ -87,9 +73,9 @@ const playBuffer = function () {
     console.log("nope");
     let sourceNode = new AudioBufferSourceNode(
       ctx,
-      { buffer: audiobuffer }
-      // { bufferTwo: audiobufferTwo },
-      // { bufferThree: audiobufferThree }
+      { buffer: audiobuffer },
+      { bufferTwo: audiobufferTwo },
+      { bufferThree: audiobufferThree }
     );
     sourceNode.onended = () => {
       sourceNode.disconnect();
@@ -116,11 +102,9 @@ const stopAudio = function () {
   const now = this.ctx.currentTime;
 
   // === Amplitude R ===
-  // Likely intent: ramp to 0 over 'release' seconds, then stop the osc.
   this.gain.linearRampToValueAtTime(0.0, now + this.release);
 
-  // Stop oscillator right when the envelope hits 0.
-  // audiobuffer.stop(now + this.release);
+  audiobuffer.stop(now + this.release);
 };
 
 //----------------------------------------file upload------------------------------------
@@ -128,30 +112,22 @@ let looper = null;
 
 //file upload
 document.querySelector("#fileUpload").addEventListener("change", loadAndDecode);
-// document
-//   .querySelector("#fileUploadTwo")
-//   .addEventListener("changeTwo", loadAndDecodeTwo);
-// // document
-//   .querySelector("#fileUploadThree")
-//   .addEventListener("changeThree", loadAndDecodeThree);
+document
+  .querySelector("#fileUploadTwo")
+  .addEventListener("changeTwo", loadAndDecodeTwo);
+document
+  .querySelector("#fileUploadThree")
+  .addEventListener("changeThree", loadAndDecodeThree);
 //-----------------------------------------adds toggle boxes---------------------------------
 let toggleRow = document.querySelector("#toggleRow");
-// let toggleRowTwo = document.querySelector("#toggleRowTwo");
-// let toggleRowThree = document.querySelector("#toggleRowThree");
+let toggleRowTwo = document.querySelector("#toggleRowTwo");
+let toggleRowThree = document.querySelector("#toggleRowThree");
 
 for (let i = 0; i < 16; i++) {
   toggleRow.innerHTML += '<input class="rowOne" type="checkBox" />';
-  //toggleRowTwo.innerHTML += '<input class="rowTwo" type="checkBox" />';
-  //toggleRowThree.innerHTML += '<input class="rowThree" type="checkBox" />';
+  toggleRowTwo.innerHTML += '<input class="rowTwo" type="checkBox" />';
+  toggleRowThree.innerHTML += '<input class="rowThree" type="checkBox" />';
 }
-
-// for (let o = 0; o < 16; o++) {
-//   toggleRowTwo.innerHTML += '<input class="rowTwo" type="checkBox" />';
-// }
-
-// for (let u = 0; u < 16; u++) {
-//   toggleRowThree.innerHTML += '<input class="rowThree" type="checkBox" />';
-// }
 
 let togs = document.querySelectorAll(".rowOne");
 console.log(togs);
